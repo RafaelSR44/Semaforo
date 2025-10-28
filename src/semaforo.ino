@@ -10,7 +10,10 @@ class Semaforo { // Classe Semaforo
     // Variáveis privadas
     unsigned long previousMillis = 0;
     int intervalo = 1000;
-    int8_t state = 0;
+    int state0 = 0;
+    int state1 = 1;
+    int state2 = 2;
+    int *ponteiro = &state0;
 
   public:
     // Método para controlar o tempo de atraso sem bloquear o loop principal
@@ -47,24 +50,24 @@ class Semaforo { // Classe Semaforo
   // Alterna entre os estados do semáforo com base no tempo definido
   // Estado 0: Vermelho, Estado 1: Verde, Estado 2: Amarelo
   void working(){
-    while (!delayMillis(6000) && state == 0){
+    while (!delayMillis(6000) && *ponteiro == 0){
       red();
       Serial.println("Red Light");
     } 
-    state = 1;
-    while (!delayMillis(4000)&& state == 1){
+    ponteiro = &state1;
+    while (!delayMillis(4000)&& *ponteiro == 1){
       green();
       Serial.println("Green Light");
     } 
-    state = 2;
-    
-    while (!delayMillis(2000) && state == 2){
+    ponteiro = &state2;
+
+    while (!delayMillis(2000) && *ponteiro == 2){
       yellow();
       Serial.println("Yellow Light");
     }
 
-    state = 0;
-    
+    ponteiro = &state0;
+
   }
 
 
